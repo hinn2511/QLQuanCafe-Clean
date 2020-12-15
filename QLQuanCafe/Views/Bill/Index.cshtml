@@ -1,0 +1,75 @@
+@model QLQuanCafe.ViewModels.BillViewModel
+
+@{
+    ViewData["Title"] = "Bill List";
+    var billNumberSort = (Model.SortOrder == "billNumber") ? "billNumber_desc" : "billNumber";
+    var billDateSort = (Model.SortOrder == "billDate") ? "billDate_desc" : "billDate";
+    var customerSort = (Model.SortOrder == "customer_desc") ? "customer" : "customer_desc";
+    var totalSort = (Model.SortOrder == "total_desc") ? "total" : "total_desc";
+}
+
+<h1>Bill Manager</h1>
+
+<form method="GET">
+    <p>        
+        <input type="text" asp-for="SearchString"/>
+        <input type="submit" value="Search"/>
+    </p>
+</form>
+
+<p>
+    <a asp-action="Create">Create new</a>
+</p>
+<p>
+    <a asp-action="BillDetail">All bill detail</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th><a  asp-route-sortOrder="@billNumberSort"
+                    asp-route-searchString="@Model.SearchString">
+                @Html.DisplayNameFor(model => model.Bills[0].BillNumber)</a></th>
+            <th><a  asp-route-sortOrder="@billDateSort"
+                    asp-route-searchString="@Model.SearchString">
+                @Html.DisplayNameFor(model => model.Bills[0].BillDate)</a></th>            
+            <th><a  asp-route-sortOrder="@customerSort"
+                    asp-route-searchString="@Model.SearchString">
+                @Html.DisplayNameFor(model => model.Bills[0].CustomerId)</a></th>
+            <th><a  asp-route-sortOrder="@totalSort"
+                    asp-route-searchString="@Model.SearchString">
+                @Html.DisplayNameFor(model => model.Bills[0].Total)</a></th>
+                 
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var bill in Model.Bills)
+    {
+        <tr>
+            <td>@bill.BillNumber</td>
+            <td>@bill.BillDate</td>
+            <td>@bill.CustomerId</td>
+            <td>@bill.Total</td> 
+            <td>
+                <a asp-action="Edit" asp-route-id="@bill.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@bill.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@bill.Id">Delete</a> |
+                <a asp-action="CreateBillDetailNew" asp-route-id="@bill.Id">Add</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.Bills.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Bills.HasNextPage ? "disabled" : "";
+}
+
+<a  class="btn btn-default @prevDisabled"
+    asp-route-searchString="@Model.SearchString"
+    asp-route-pageIndex="@(Model.Bills.PageIndex -1)">Previous</a>
+<a  class="btn btn-default @nextDisabled"
+    asp-route-searchString="@Model.SearchString"
+    asp-route-pageIndex="@(Model.Bills.PageIndex +1)">Next</a>

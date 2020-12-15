@@ -1,0 +1,39 @@
+@model QLQuanCafe.ViewModels.BillDetailViewModel;
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Bill</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.BillId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => Model.BillId)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Bill.BillNumber)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => Model.Bill.BillNumber)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Bill.BillDate)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => Model.Bill.BillDate)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Bill.CustomerId)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => Model.Bill.CustomerId)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Bill.Total)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => Model.Bill.Total)</dd>
+    </dl>
+</div>
+<div>
+    @foreach (var billDetail in Model.BillDetails)
+    {
+        <tr>
+            <td>@billDetail.ProductId</td>
+            <td>@billDetail.Quantity</td>
+            <td>@billDetail.BillDetailTotal</td>
+        </tr>
+    }
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.BillId">Edit</a> |
+    <a asp-action="CreateBillDetail" asp-route-id="@Model.BillId">Add bill detail</a> |
+    <a asp-action="Index">Back to list</a>
+</div>

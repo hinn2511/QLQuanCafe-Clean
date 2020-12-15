@@ -1,0 +1,40 @@
+@model QLQuanCafe.ViewModels.BillDetailAllViewModel;
+
+@{
+    ViewData["Title"] = "Bill Detail List";
+    
+}
+
+<h1>Bill Detail Manager</h1>
+
+
+<p>
+    <a asp-action="Create">Create new</a>
+</p>
+
+<p>
+    <a asp-action="CreateDetail">Create new detail</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Bill ID</th>
+            <th>Product ID</th>            
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var bill in Model.BillDetails)
+    {
+        <tr>
+            <td>@bill.BillId</td>
+            <td>@bill.ProductId</td>
+            <td>@bill.Quantity </td>
+            <td>@bill.BillDetailTotal</td> 
+            
+        </tr>
+    }
+    </tbody>
+</table>

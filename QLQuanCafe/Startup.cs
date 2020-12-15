@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
-using Infrastructure.Persistent;
+using Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Application.Services;
+using Application.Interfaces;
+using Domain.Repositories;
 
 namespace QLQuanCafe
 {
@@ -36,6 +39,17 @@ namespace QLQuanCafe
             services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<QLQuanCafeContext>();
             services.AddControllersWithViews();
+
+            services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+
+            services.AddScoped<IIngredientRepository, IngredientRepository>();
+            services.AddScoped<IIngredientService, IngredientService>();
+
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IBillService, BillService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +79,18 @@ namespace QLQuanCafe
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: default,
+                    pattern: "{controller=Ingredient}/{action=Index}/{id?}"
+                );
+                endpoints.MapControllerRoute(
+                    name: default,
+                    pattern: "{controller=Customer}/{action=Index}/{id?}"
+                );
+                endpoints.MapControllerRoute(
+                    name: default,
+                    pattern: "{controller=Bill}/{action=Index}/{id?}"
+                );
                 endpoints.MapRazorPages();
             });
         }
